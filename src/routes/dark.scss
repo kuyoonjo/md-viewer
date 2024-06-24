@@ -1,0 +1,105 @@
+$bg: #222;
+$main-bg: #333;
+
+body.dark {
+    background: $bg;
+
+    &::-webkit-scrollbar-track {
+        background: $main-bg;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #444;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    nav {
+        background: $bg;
+
+        &::-webkit-scrollbar-track {
+            background: $bg;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #444;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        a {
+            color: #bbb;
+
+            &:hover {
+                color: #eee;
+            }
+        }
+    }
+
+    main {
+        background: #333;
+        color: #ddd;
+
+        h1,
+        h2 {
+            color: #ddd;
+        }
+
+        h2 {
+            border-color: #555;
+        }
+
+
+        h6 {
+            color: #aaa;
+        }
+
+        blockquote {
+            color: #80afcc;
+        }
+
+        pre {
+            background-color: #1c1b1b;
+            border-color: #222;
+        }
+
+        code {
+            background-color: #1c1b1b;
+            border-color: #222;
+        }
+
+        a {
+            color: #168afe;
+
+            &:hover {
+                color: #3d9cfb;
+            }
+
+            &.absent {
+                color: #cc0000;
+            }
+        }
+
+        table tr {
+            th {
+                background-color: #222;
+                border-color: #666;
+            }
+            td {
+                border-color: #666;
+            }
+        }
+
+        .footnotes {
+            background-color: #444;
+        }
+
+        li:target {
+            background-color: #666;
+        }
+    }
+}
