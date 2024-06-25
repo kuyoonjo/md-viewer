@@ -1,7 +1,7 @@
 {
-  "productName": "md-viewer",
-  "version": "0.0.0",
-  "identifier": "com.tauri.dev",
+  "productName": "MD Viewer",
+  "version": "../package.json",
+  "identifier": "news.chen.md-viewer",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -10,15 +10,18 @@
   },
   "app": {
     "windows": [
-      {
-        "title": "md-viewer",
-        "width": 800,
-        "height": 600
-      }
     ],
     "macOSPrivateApi": true,
     "security": {
-      "csp": null
+      "csp": {
+        "img-src": "'self' asset: http: blob: data:"
+      },
+      "assetProtocol": {
+        "enable": true,
+        "scope": {
+          "allow": ["**"]
+        }
+      }
     }
   },
   "bundle": {
@@ -30,6 +33,25 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
+    ],
+    "fileAssociations": [
+      {
+        "name": "Markdown",
+        "role": "Viewer",
+        "ext": ["md", "markdown"],
+        "description": "Markdown",
+        "mimeType": "text/markdown"
+      }
     ]
+  },
+  "plugins": {
+    "deep-link": {
+      "mobile": [
+        { "host": "news.chen.md-viewer", "pathPrefix": ["/open"] }
+      ],
+      "desktop": {
+        "schemes": ["md-viewer", "md-viewer"]
+      }
+    }
   }
 }

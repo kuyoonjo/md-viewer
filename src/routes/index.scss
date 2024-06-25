@@ -86,6 +86,7 @@ main {
   padding-bottom: 10px;
   padding-left: 25px;
   padding-right: 19px;
+  min-height: calc(100vh - 20px);
 }
 
 main>*:first-child {
