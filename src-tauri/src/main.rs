@@ -88,7 +88,7 @@ fn add_win_menu(app: &AppHandle, label: &str) {
     } else {
         url_to_path(label)
     };
-    let label = STANDARD.encode(label);
+    let label = hex::encode(label);
     if let Some(win) = app.get_webview_window(&label) {
         let _ = win.set_focus();
         let id = format!("window-{}", &label);
