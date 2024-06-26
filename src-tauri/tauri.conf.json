@@ -42,7 +42,12 @@
         "description": "Markdown",
         "mimeType": "text/markdown"
       }
-    ]
+    ],
+    "windows": {
+      "nsis": {
+        "installMode": "perMachine"
+      }
+    }
   },
   "plugins": {
     "deep-link": {
@@ -50,7 +55,7 @@
         { "host": "news.chen.md-viewer", "pathPrefix": ["/open"] }
       ],
       "desktop": {
-        "schemes": ["md-viewer", "md-viewer"]
+        "schemes": ["md-viewer"]
       }
     }
   }

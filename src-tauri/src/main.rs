@@ -1,7 +1,8 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use base64::{engine::general_purpose::STANDARD, Engine as _};
+use std::sync::Mutex;
+
 use tauri::{
     menu::{CheckMenuItemBuilder, MenuId, MenuItemKind, PredefinedMenuItem},
     AppHandle, Manager,
@@ -58,8 +59,8 @@ fn join(url: &str, path: &str) -> String {
 }
 
 #[tauri::command]
-fn decode_base64(base64: &str) -> String {
-    if let Ok(v) = STANDARD.decode(base64) {
+fn decode_hex(hex: &str) -> String {
+    if let Ok(v) = hex::decode(hex) {
         if let Ok(s) = String::from_utf8(v) {
             return s;
         }
@@ -136,7 +137,7 @@ fn add_win(app: &AppHandle, label: &str) {
     } else {
         url_to_path(label)
     };
-    let label = STANDARD.encode(label);
+    let label = hex::encode(label);
     tauri::WebviewWindowBuilder::new(app, &label, tauri::WebviewUrl::App("index.html".into()))
         .inner_size(800.0, 600.0)
         .title(&title)
@@ -163,24 +164,32 @@ fn remove_win_menu(app: &AppHandle, id: &MenuId) {
 }
 
 fn main() {
-    tauri::Builder::default()
-        .plugin(tauri_plugin_deep_link::init())
+    let app = tauri::Builder::default();
+    #[cfg(target_os = "macos")]
+    let app = app.plugin(tauri_plugin_deep_link::init());
+    let app = app
         .plugin(tauri_plugin_fs::init())
         .invoke_handler(tauri::generate_handler![
             md_to_html,
             url_to_path,
             join,
-            decode_base64
+            decode_hex
         ])
         .setup(|app| {
             #[cfg(any(target_os = "windows", target_os = "linux"))]
             {
-                let args = args();
-                if args.len() > 1 {
-                    if let Ok(url) = url::Url::from_file_path(&args[1]) {
-                        let url = url.to_string();
-                        add_win(app.handle(), &url);
+                // NOTICE: `args` may include URL protocol (`your-app-protocol://`) or arguments (`--`) if app supports them.
+                let mut urls = Vec::new();
+                for arg in std::env::args().skip(1) {
+                    if let Ok(url) = url::Url::from_file_path(&arg) {
+                        urls.push(url.to_string());
                     }
+                }
+
+                if let Some(url) = urls.get(0) {
+                    add_win(app.handle(), url);
+                } else {
+                    add_win(app.handle(), "");
                 }
             }
 
@@ -216,9 +225,12 @@ fn main() {
                     }
                 });
             }
+            
             Ok(())
-        })
-        .build(tauri::generate_context!())
+        });
+
+    #[cfg(target_os = "macos")]
+    app.build(tauri::generate_context!())
         .expect("error while running tauri application")
         .run(|app, event| {
             #[cfg(target_os = "macos")]
@@ -229,4 +241,8 @@ fn main() {
                 }
             }
         });
+
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
+    app.run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }

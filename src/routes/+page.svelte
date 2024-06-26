@@ -33,9 +33,9 @@
     });
   }
 
-  function decode_base64(base64: string): Promise<string> {
-    return invoke("decode_base64", {
-      base64,
+  function decode_hex(hex: string): Promise<string> {
+    return invoke("decode_hex", {
+      hex,
     });
   }
 
@@ -43,7 +43,7 @@
     const w = getCurrent();
     console.log(w.label);
     let md = defaultMd;
-    let url = await decode_base64(w.label);
+    let url = await decode_hex(w.label);
     if (url) {
       const path = await url_to_path(url);
       md = await readTextFile(path);

@@ -20,6 +20,7 @@ url = "2.5.2"
 tauri-plugin-deep-link = "2.0.0-beta"
 tauri-plugin-fs = "2.0.0-beta"
 base64 = "0.22.1"
+hex = "0.4.3"
 
 # [features]
 # default = [ "custom-protocol" ]
