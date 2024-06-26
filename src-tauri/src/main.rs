@@ -1,12 +1,15 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::sync::Mutex;
+use tauri::AppHandle;
 
+#[cfg(target_os = "macos")]
 use tauri::{
     menu::{CheckMenuItemBuilder, MenuId, MenuItemKind, PredefinedMenuItem},
-    AppHandle, Manager,
+    Manager,
 };
+
+#[cfg(target_os = "macos")]
 use tauri_plugin_deep_link::DeepLinkExt;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -28,12 +31,6 @@ fn md_to_html(md: &str) -> String {
     options.extension.tasklist = true;
     options.extension.header_ids = Some("nav-item-".to_string());
     comrak::markdown_to_html(md, &options)
-}
-
-#[cfg(any(target_os = "windows", target_os = "linux"))]
-fn args() -> Vec<String> {
-    let args = std::env::args();
-    args.into_iter().collect()
 }
 
 #[tauri::command]
