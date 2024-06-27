@@ -67,7 +67,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@v4.0.2
+      - uses: pnpm/action-setup@v4.0.0
         name: Install pnpm
         id: pnpm-install
 
