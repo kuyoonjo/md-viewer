@@ -24,6 +24,9 @@
 
 </div>
 
+## Screenshot
+![](./screenshot.png)
+
 ## Installation
 
 Download the installer for your operating system [on the release page](https://github.com/kuyoonjo/md-viewer/releases).
